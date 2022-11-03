@@ -1,0 +1,40 @@
+BEGIN TRANSACTION;
+
+/* Create a table called NAMES */
+CREATE TABLE voter(voter_id integer PRIMARY KEY, Name text, region text, salary int, can_id integer);
+
+/* Create few records in this table */
+INSERT INTO voter VALUES(20311,'Tom','mumbai',280000,82345011);
+INSERT INTO voter VALUES(20312,'Lucy','banglore',680000,82345014);
+INSERT INTO voter VALUES(20313,'Frank','surat',620000,82345013);
+INSERT INTO voter VALUES(20314,'Jane','ahemdabad',780000,82345012);
+INSERT INTO voter VALUES(20315,'Robert','pune',890000,82345012);
+COMMIT;
+
+/* Display all the records from the table */
+SELECT * FROM voter;
+
+/* Create a table called NAMES */
+CREATE TABLE candidate(can_id integer PRIMARY KEY, Name text, party text, region text, exp int);
+
+/* Create few records in this table */
+INSERT INTO candidate VALUES(82345011,'Yogi','BJP','mumbai',280000);
+INSERT INTO candidate VALUES(82345012,'Arvind','AAP','banglore',680000);
+INSERT INTO candidate VALUES(82345013,'Amit','BJP','surat',620000);
+INSERT INTO candidate VALUES(82345014,'yash','AAP','ahemdabad',780000);
+INSERT INTO candidate VALUES(82345015,'Rahul','INC','pune',890000);
+COMMIT;
+
+/* Display all the records from the table */
+SELECT * FROM candidate;
+
+select count(*), Name, region, voter_id
+from voter where can_id = 82345012;
+
+
+
+create view get_candidate as
+select can_id, Name, party
+from candidate;
+
+select * from get_candidate;
