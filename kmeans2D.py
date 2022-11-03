@@ -92,6 +92,6 @@ def main(data, k):
 
 
 values = pd.read_csv("dataset_very_cool.csv")
-dataset = values[['GRE Score', 'University Rating']].to_numpy()
+dataset = values[['A', 'B']].to_numpy()
 
 main(dataset, 2)

@@ -14,7 +14,6 @@ nodes = [
     [2, 0]
 ]
 
-
 n = int(input("Enter the number of edges:\n"))
 
 print(f"Enter the {n} edges:\n")
@@ -40,15 +39,10 @@ for _ in range(max_itr):
     hits = np.dot(adjacency_matrix, authorities)
     authorities = np.dot(adjacency_matrix.T, hits)
 
-    """
-        @ ka matlab dot prodcut
-        hits = np.dot(adjacency_matrix,authorities)
-        hits = adjacency_matrix @ authorities
-    """
     # normalize
     authorities = authorities / np.linalg.norm(authorities)
 hits = hits / np.linalg.norm(hits)
-print("Hits: ", dict(enumerate(hits)))
+print("Hubs: ", dict(enumerate(hits)))
 print()
 print("Authorities: ", dict(enumerate(authorities)))
 print()
