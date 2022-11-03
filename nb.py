@@ -1,38 +1,82 @@
+#Name:Vailantan Fernandes TE_COMPS_A 9197 BATCH_C
+
 import pandas as pd
-import numpy as np
 
-df = pd.read_csv("naive_bayes.csv")
-print(df)
+df = pd.read_csv('data_8.csv')
 
-tcount = df[df["Play"] == "Yes"]["Play"].count()
-fcount = df[df["Play"] == "No"]["Play"].count()
-tcount, fcount
+df['Outlook'].replace(['Rainy', 'Overcast','Sunny'],
+                        [0, 1,2], inplace=True)
 
-print(tcount, fcount)
+df['Temp'].replace(['Hot', 'Mild','Cool'],
+                        [0, 1,2], inplace=True)
 
-# def getProb(value, columnName):
-#     df1 = df[df[columnName] == value]
-#     yesCount = df1[df1.Play == "Yes"].Play.count()
-#     noCount = df1[df1.Play == "No"].Play.count()
-#     return (yesCount/tcount, noCount/fcount)
+df['Humidity'].replace(['Normal', 'High'],
+                        [0, 1], inplace=True)
 
+df['Windy'].replace(['f', 't'],
+                        [0, 1], inplace=True)
 
-# c1 = input()
-# c2 = input()
-# c3 = input()
-# c4 = int(input())
+df['Play'].replace(['no', 'yes'],
+                        [0, 1], inplace=True)
 
-# ans1y, ans1n = getProb(c1, "Outlook")
-# ans2y, ans2n = getProb(c2, "Temperature")
-# ans3y, ans3n = getProb(c3, "Humidity")
-# ans4y, ans4n = getProb(c4, "Windy")
+arr = df.to_numpy()
 
 
-# Yes = ans1y*ans2y*ans3y*ans4y*(tcount/tcount+fcount)
-# No = ans1n*ans2n*ans3n*ans4n*(tcount/tcount+fcount)
-# print(Yes, No)
+mp = dict()#two key  for yes and no
+for i in range(len(arr)):
+    row = arr[i]
+    y = row[-1] #y key yes or no 1 or 0
+    if (y not in mp):
+        mp[y] = list() # mp[y] ka value
+    mp[y].append(row)
+for label in mp:
+    print(label)
+    for row in mp[label]:
+        print(row)
 
-# if(Yes > No):
-#     print("Plays Golf")
-# else:
-#     print("No Golf")
+test = [2,1,0,1] #tuple
+
+probYes = 1
+count = 0
+total = 0
+for row in arr:
+    if(row[-1] == 1):
+        count+=1
+    total+=1
+print("Total yes: "+str(count)+" / "+str(total))
+probYes *= count/total
+for i in range(len(test)):
+    count = 0
+    total = 0
+    for row in mp[1]:
+        if(test[i] == row[i]):
+            count += 1
+        total += 1
+    print('for feature '+str(i+1))
+    print(str(count)+" / "+str(total))
+    probYes *= count/total
+probNo = 1
+count = 0
+total = 0
+for row in arr:
+    if(row[-1] == 0):
+        count+=1
+    total+=1
+probNo *= count/total
+print("Total no: "+str(count)+" / "+str(total))
+for i in range(len(test)):
+    count = 0
+    total = 0
+    for row in mp[0]:
+        if(test[i] == row[i]):
+            count += 1
+        total += 1
+    print('for feature '+str(i+1))
+    print(str(count)+" / "+str(total))
+    probNo *= count/total
+
+print(probYes)
+print(probNo)
+
+prob = probYes/(probYes+probNo)
+print("Probability of playing golf: "+str(prob*100)+"%")
